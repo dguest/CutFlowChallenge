@@ -143,7 +143,7 @@ def main():
 
     cuts = constructCutFlow(inputs.cut_flow_file)
 
-    sql.constructSqlTable(cuts, file_name = 'cutflow.db')
+    sql.constructSqlTable(cuts + ['name','notes'], file_name = 'cutflow.db')
 
     user_cut_flows = {}
     for f in files:
