@@ -152,9 +152,9 @@ def main():
 
     sql.writeCutsToSql(user_cut_flows, 'cutflow.db')
 
-    print sql.readCutsFromSql('cutflow.db')
+    read_back_cutflows = sql.readCutsFromSql('cutflow.db')
 
-    displayCutFlows(cuts, user_cut_flows)
+    displayCutFlows(cuts, read_back_cutflows)
 
 
 # =============================================================================
