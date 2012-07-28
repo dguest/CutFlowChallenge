@@ -18,7 +18,19 @@ def add_cutflow(connection, cut_dict):
 
     cuts = {k:v for k,v in cut_dict.items() if k != 'user'}
     for cut, value in cuts.items(): 
-        connection .execute(
+
+        # make sure the column exists (for injection safety)
+        # TODO: clean up the next two lines, there's probably a 
+        #       single sql command for this
+        connection.row_factory = sqlite3.Row
+        col_keys = connection.execute(
+            'select * from cutflow where user = ?', (cut_dict['user'],) 
+            ).fetchone().keys()
+        if not cut.replace(r'"','') in col_keys: 
+            raise IOError(
+                'could not find column {} in {}'.format(cut, col_keys) )
+
+        connection.execute(
             'update cutflow set {} = :v where user = :s'.format(cut), 
             {'v': value, 's': cut_dict['user']})
 
